@@ -1,0 +1,12 @@
+services:
+  event-db:
+    image: postgres:17
+    container_name: event-postgres
+    #volumes:
+    #  - event-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: eventuser
+      POSTGRES_PASSWORD: eventpassword
+      POSTGRES_DB: eventsDB
+    ports:
+      - "5433:5432"
