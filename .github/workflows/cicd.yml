@@ -58,3 +58,4 @@ jobs:
           serviceId: ${{ secrets.RENDER_SERVICE_ID }}
           apiKey: ${{ secrets.RENDER_API_KEY }}
           deployHookURL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          ref: ''
