@@ -6,6 +6,7 @@ import ar.edu.palermo.devops.tp.service.EventServiceInterface;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -22,7 +23,12 @@ public class EventController {
     @PostMapping
     public ResponseEntity<Event> createEvent(@RequestBody @Valid EventDto event) {
         Event savedEvent = eventSvc.save(event);
-        return ResponseEntity.created(URI.create(String.format("/api/v1/events/%d", savedEvent.getId()))).body(savedEvent);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedEvent.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(savedEvent);
     }
 
     @GetMapping()
@@ -31,22 +37,22 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+    public ResponseEntity<Event> getEventById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(eventSvc.findById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody @Valid EventDto event) {
+    public ResponseEntity<Event> updateEvent(@PathVariable("id") Long id, @RequestBody @Valid EventDto event) {
         return ResponseEntity.ok(eventSvc.update(id, event));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Event> patchEvent(@PathVariable Long id, @RequestBody @Valid EventDto event) {
+    public ResponseEntity<Event> patchEvent(@PathVariable("id") Long id, @RequestBody @Valid EventDto event) {
         return ResponseEntity.ok(eventSvc.update(id, event));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteEvent(@PathVariable("id") Long id) {
         eventSvc.delete(id);
         return ResponseEntity.noContent().build();
     }
