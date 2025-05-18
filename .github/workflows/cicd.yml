@@ -50,3 +50,11 @@ jobs:
       - name: Push Docker image
         if: github.ref == 'refs/heads/main'
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/events-service:latest
+
+      - name: Trigger deploy to Render
+        if: github.ref == 'refs/heads/main'
+        uses: bankfliptech/deploy-to-render@v1
+        with:
+          serviceId: ${{ secrets.RENDER_SERVICE_ID }}
+          apiKey: ${{ secrets.RENDER_API_KEY }}
+          deployHookURL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
