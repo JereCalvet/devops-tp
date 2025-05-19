@@ -21,7 +21,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        MAVEN_PROFILE: dev
+        MAVEN_PROFILE: development
     ports:
       - "8080:8080"
     depends_on:

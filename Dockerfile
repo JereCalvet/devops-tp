@@ -7,23 +7,23 @@ RUN mvn dependency:go-offline
 
 COPY src ./src
 
-ARG MAVEN_PROFILE=prod
+ARG MAVEN_PROFILE=production
 
 RUN echo "Building with Maven profile: $MAVEN_PROFILE"
 RUN mvn --batch-mode clean package -DskipTests -P${MAVEN_PROFILE}
 
-LABEL authors="Jere"
-LABEL description="Dockerfile for a Spring Boot application with Maven and JRE Alpine"
-LABEL license="MIT"
-LABEL repository="github.com/jerecalvet/devops-tp"
+LABEL authors="Jere", description="Dockerfile for a Spring Boot application with Maven, New Relic and JRE Alpine", license="MIT", repository="github.com/jerecalvet/devops-tp"
 # Etapa 2: Runtime
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-RUN adduser -D myuser && chown -R myuser /app
-USER myuser
+RUN mkdir -p /usr/local/newrelic
+ADD ./newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
+ADD ./newrelic/newrelic.yml /usr/local/newrelic/newrelic.yml
+
+ARG MAVEN_PROFILE=production
+ENV NEW_RELIC_ENV=${MAVEN_PROFILE}
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
-
+ENTRYPOINT ["sh", "-c", "java -javaagent:/usr/local/newrelic/newrelic.jar -Dnewrelic.environment=$NEW_RELIC_ENV -jar /app/app.jar"]

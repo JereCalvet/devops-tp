@@ -44,18 +44,18 @@
 	</properties>
 	<profiles>
 		<profile>
-			<id>dev</id>
+			<id>development</id>
 			<properties>
-				<activatedProperties>dev</activatedProperties>
+				<activatedProperties>development</activatedProperties>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 		</profile>
 		<profile>
-			<id>prod</id>
+			<id>production</id>
 			<properties>
-				<activatedProperties>prod</activatedProperties>
+				<activatedProperties>production</activatedProperties>
 			</properties>
 		</profile>
 		<profile>
@@ -132,7 +132,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<build>
 		<plugins>
 			<plugin>
