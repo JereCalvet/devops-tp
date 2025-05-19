@@ -24,7 +24,8 @@ ADD ./newrelic/newrelic.yml /usr/local/newrelic/newrelic.yml
 
 ARG MAVEN_PROFILE=production
 ENV NEW_RELIC_ENV=${MAVEN_PROFILE}
-ENV NEW_RELIC_LICENSE_KEY=''
+ARG NEW_RELIC_LICENSE_KEY=''
+ENV NEW_RELIC_LICENSE_KEY=${MAVEN_PROFILE}
 
 EXPOSE 8080
 ENTRYPOINT ["sh", "-c", "java -javaagent:/usr/local/newrelic/newrelic.jar -Dnewrelic.environment=$NEW_RELIC_ENV -Dnewrelic.config.license_key=$NEW_RELIC_LICENSE_KEY -jar /app/app.jar"]
