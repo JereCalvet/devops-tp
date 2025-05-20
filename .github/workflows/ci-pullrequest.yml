@@ -6,6 +6,7 @@ on:
 
 jobs:
   build-and-test:
+    name: Pull Request - Test and Build with Maven
     env:
       TZ: America/Argentina/Buenos_Aires
     runs-on: ubuntu-latest
