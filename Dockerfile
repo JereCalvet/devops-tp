@@ -18,14 +18,5 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-RUN mkdir -p /usr/local/newrelic
-ADD ./newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
-ADD ./newrelic/newrelic.yml /usr/local/newrelic/newrelic.yml
-
-ARG MAVEN_PROFILE=production
-ENV NEW_RELIC_ENV=${MAVEN_PROFILE}
-ARG NEW_RELIC_LICENSE_KEY
-ENV NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY}
-
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c", "java -javaagent:/usr/local/newrelic/newrelic.jar -Dnewrelic.environment=$NEW_RELIC_ENV -Dnewrelic.config.license_key=$NEW_RELIC_LICENSE_KEY -jar /app/app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
