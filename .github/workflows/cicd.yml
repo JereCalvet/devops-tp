@@ -46,8 +46,6 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }}
 
       - name: Trigger deploy to Render
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
