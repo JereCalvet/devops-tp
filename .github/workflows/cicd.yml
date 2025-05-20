@@ -6,7 +6,7 @@ on:
     tags: [ 'v*' ]
 
 jobs:
-  build-and-test:
+  build-test-deploy:
     env:
       TZ: America/Argentina/Buenos_Aires
     runs-on: ubuntu-latest
