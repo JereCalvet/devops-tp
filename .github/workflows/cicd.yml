@@ -48,4 +48,14 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Trigger deploy to Render
-        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          IMAGE_URL="docker.io/jerecalvet/events-service:${TAG}"
+          ENCODED_IMAGE_URL=$(python3 -c "import urllib.parse; print(urllib.parse.quote('''$IMAGE_URL''', safe=''))")
+          
+          FINAL_URL="${DEPLOY_HOOK}&imgURL=${ENCODED_IMAGE_URL}"
+          echo "Triggering Render deploy with image tag: $TAG"
+          echo "Final URL: $FINAL_URL"
+          curl -X POST "$FINAL_URL"
+
