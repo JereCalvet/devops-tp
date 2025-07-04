@@ -50,6 +50,7 @@ jobs:
       - name: Trigger deploy to Render
         env:
           TAG: ${{ github.ref_name }}
+          DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
           IMAGE_URL="docker.io/jerecalvet/events-service:${TAG}"
           ENCODED_IMAGE_URL=$(python3 -c "import urllib.parse; print(urllib.parse.quote('''$IMAGE_URL''', safe=''))")
